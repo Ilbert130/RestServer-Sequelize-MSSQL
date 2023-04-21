@@ -1,6 +1,6 @@
 "use strict";
 const express_1 = require("express");
-const usuarios_1 = require("../controller/usuarios");
+const usuarios_1 = require("../controllers/usuarios");
 const router = (0, express_1.Router)();
 //GET
 router.get('/', usuarios_1.getUsuarios);

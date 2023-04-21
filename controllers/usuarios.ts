@@ -25,7 +25,7 @@ export const getUsuario = (req:Request, res:Response):void => {
 //POST
 export const postUsuario = (req:Request, res:Response):void => {
 
-    const {body} = req.body
+    const {body} = req
 
     res.json({
         body,
@@ -37,7 +37,7 @@ export const postUsuario = (req:Request, res:Response):void => {
 export const putUsuario = (req:Request, res:Response):void => {
 
     const {id} = req.params;
-    const {body} = req.body;
+    const {body} = req
 
     res.json({
         id,

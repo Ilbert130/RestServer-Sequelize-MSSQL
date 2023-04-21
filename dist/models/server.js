@@ -7,7 +7,7 @@ const usurios_1 = __importDefault(require("../routes/usurios")); //Asi esportamo
 class Server {
     constructor() {
         this.apiPaths = {
-            usuarios: 'api/usuarios'
+            usuarios: '/api/usuarios'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
@@ -15,7 +15,7 @@ class Server {
         this.routes();
     }
     routes() {
-        this.app.use(this.apiPaths.usuarios, usurios_1.default.route);
+        this.app.use(this.apiPaths.usuarios, usurios_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

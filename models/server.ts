@@ -6,7 +6,7 @@ class Server {
     private app:Application;
     private port:string;
     private apiPaths = {
-        usuarios: 'api/usuarios'
+        usuarios: '/api/usuarios'
     }
 
     constructor() {
@@ -18,7 +18,7 @@ class Server {
     }
 
     routes():void {
-        this.app.use(this.apiPaths.usuarios, userRoutes.route);
+        this.app.use(this.apiPaths.usuarios, userRoutes);
     }
 
     listen():void {
