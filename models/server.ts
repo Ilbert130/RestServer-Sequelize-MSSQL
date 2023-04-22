@@ -1,5 +1,6 @@
 import express, {Application} from 'express';      //Destructurando
 import userRoutes from '../routes/usurios';        //Asi esportamos todo de un modulo. En este caso no usamos alia por que solo exportamos una sola cosa
+import cors from 'cors';
 
 class Server {
 
@@ -13,8 +14,25 @@ class Server {
         this.app = express();
         this.port = process.env.PORT || '8000';
 
+        //Definiendo los middlewares
+        this.middlewares();
+
         //Definiendo las rutas
         this.routes();
+    }
+
+    //TODO: Conectar Base de datos
+
+    middlewares():void {
+        
+        //CORS
+        this.app.use(cors());
+
+        //Lectura del body
+        this.app.use(express.json());
+
+        //Carpeta publica
+        this.app.use(express.static('public'));
     }
 
     routes():void {
