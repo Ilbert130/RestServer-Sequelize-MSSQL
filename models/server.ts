@@ -1,6 +1,7 @@
 import express, {Application} from 'express';      //Destructurando
 import userRoutes from '../routes/usurios';        //Asi esportamos todo de un modulo. En este caso no usamos alia por que solo exportamos una sola cosa
 import cors from 'cors';
+import db from '../db/connection';
 
 class Server {
 
@@ -14,6 +15,9 @@ class Server {
         this.app = express();
         this.port = process.env.PORT || '8000';
 
+        //Definiendo la conexion
+        this.dbConnection();
+
         //Definiendo los middlewares
         this.middlewares();
 
@@ -22,6 +26,17 @@ class Server {
     }
 
     //TODO: Conectar Base de datos
+    async dbConnection():Promise<void> {
+
+        try {
+            
+            await db.authenticate();
+            console.log('DataBase Online');
+
+        } catch (error:any) {
+            throw new Error(error);
+        }
+    }
 
     middlewares():void {
         
