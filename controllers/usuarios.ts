@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Usuario from "../models/usuario";
+import Usuario from '../models/usuario';
 
 
 
@@ -35,36 +35,92 @@ export const getUsuario = async(req:Request, res:Response):Promise<void> => {
 }
 
 //POST
-export const postUsuario = (req:Request, res:Response):void => {
+export const postUsuario = async(req:Request, res:Response) => {
 
     const {body} = req
 
-    res.json({
-        body,
-        msg:'postUsuario'
-    });
+    
+    try {
+
+        const existEmail = await Usuario.findOne({
+            where: {
+                email: body.email
+            }
+        })
+
+        if(existEmail){
+            return res.status(400).json({
+                msg:'Ya existe un usuario con el email introducido'
+            });
+        }
+
+        const usuario = Usuario.build(body);
+        await usuario.save();
+
+        res.json({
+            msg:'postUsuario',
+            body
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.json({
+            msg:'Hable con el administrador'
+        });
+    }
 }
 
 //PUT
-export const putUsuario = (req:Request, res:Response):void => {
+export const putUsuario = async(req:Request, res:Response) => {
 
     const {id} = req.params;
     const {body} = req
 
-    res.json({
-        id,
-        body,
-        msg:'putUsuario'
-    });
+    try {
+
+        const usuario = await Usuario.findByPk(id);
+
+        if(!usuario){
+            return res.status(404).json({
+                msg: 'No existe un usuario con el id ingresado'
+            });
+        }
+
+        await usuario.update(body);
+
+        res.json({
+            msg:'postUsuario',
+            usuario
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.json({
+            msg:'Hable con el administrador'
+        });
+    }
 }
 
 //DELETE
-export const deleteUsuario = (req:Request, res:Response):void => {
+export const deleteUsuario = async(req:Request, res:Response) => {
 
     const {id} = req.params;
 
+    const usuario = await Usuario.findByPk(id);
+    if(!usuario){
+        return res.status(404).json({
+            msg: 'No existe un usuario con el id ingresado'
+        });
+    }
+
+    //Eliminacion fisica del registro en la base de datos
+    // await usuario.destroy();
+
+    //Eliminacion actualizando el campo estado
+    await usuario.update({estado:false});
+
     res.json({
-        id,
-        msg:'putUsuario'
+        msg:'putUsuario',
+        usuario
     });
 }
